@@ -1,0 +1,70 @@
+import React, { useState } from 'react';
+import { Card, CardContent } from '../components/ui/card';
+import { Input } from '../components/ui/input';
+import { Button } from '../components/ui/button';
+import { Lock } from 'lucide-react';
+
+const UbertPhishingDemo = () => {
+  const [cardNumber, setCardNumber] = useState('');
+  const [expiration, setExpiration] = useState('');
+  const [cvv, setCvv] = useState('');
+  const [zipCode, setZipCode] = useState('');
+
+  return (
+    <div className="flex items-center justify-center min-h-screen bg-[#f7f9fa]">
+      <Card className="w-96 shadow-xl bg-white rounded-lg">
+        <CardContent>
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center">
+              <Lock className="mr-2 text-green-500" />
+              <span className="text-green-500 font-semibold">Verified by Ubert™ SecurePay</span>
+            </div>
+            <img 
+              src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Uber_logo_2018.png" 
+              alt="Ubert Logo" 
+              className="w-2"
+            />
+          </div>
+          <h1 className="text-xl font-semibold text-gray-800 mb-2">Outstanding Payment</h1>
+          <p className="text-gray-500 mb-6 text-sm">
+            You have an outstanding fee of <span className="font-bold">$15.89</span> for your recent ride. 
+            Please complete your payment to avoid service disruption.
+          </p>
+
+          <div className="space-y-4">
+            <Input 
+              placeholder="Card Number" 
+              value={cardNumber} 
+              onChange={(e) => setCardNumber(e.target.value)} 
+            />
+            <Input 
+              placeholder="Expiration Date (MM/YY)" 
+              value={expiration} 
+              onChange={(e) => setExpiration(e.target.value)} 
+            />
+            <Input 
+              placeholder="CVV" 
+              value={cvv} 
+              onChange={(e) => setCvv(e.target.value)} 
+            />
+            <Input 
+              placeholder="ZIP Code" 
+              value={zipCode} 
+              onChange={(e) => setZipCode(e.target.value)} 
+            />
+          </div>
+
+          <Button className="w-full mt-6 bg-black hover:bg-gray-800 text-white text-lg font-medium py-2 rounded-lg">
+            Complete Payment
+          </Button>
+
+          <p className="text-xs text-gray-400 mt-4 text-center">
+            Payments secured by Ubert™ SecurePay. Your information is encrypted for your safety.
+          </p>
+        </CardContent>
+      </Card>
+    </div>
+  );
+};
+
+export default UbertPhishingDemo;
