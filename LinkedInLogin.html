@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LinkedIns - Log In</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: white;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .login-container {
+            background-color: white;
+            padding: 24px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            width: 352px;
+        }
+
+        .logo {
+            color: #0A66C2;
+            font-size: 32px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            border: 1px solid #0A66C2;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        .login-button {
+            width: 100%;
+            padding: 12px;
+            background-color: #0A66C2;
+            color: white;
+            border: none;
+            border-radius: 24px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 16px;
+        }
+
+        .login-button:hover {
+            background-color: #084482;
+        }
+
+        .forgot-password {
+            text-align: center;
+            margin-top: 16px;
+        }
+
+        .forgot-password a {
+            color: #0A66C2;
+            text-decoration: none;
+        }
+
+        .forgot-password a:hover {
+            text-decoration: underline;
+        }
+
+        .checkbox-container {
+            margin-top: 16px;
+        }
+
+        .sso-button {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            border: 1px solid #666;
+            border-radius: 24px;
+            background-color: white;
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .sso-button img {
+            width: 20px;
+            margin-right: 10px;
+        }
+
+        .signup-prompt {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .signup-prompt a {
+            color: #0A66C2;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .signup-prompt a:hover {
+            text-decoration: underline;
+        }
+
+        .divider {
+            text-align: center;
+            margin: 20px 0;
+            color: #666;
+        }
+
+        .linkedin-logo-top {
+            position: fixed;
+            top: 24px;
+            left: 32px;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+        }
+
+        .linkedin-logo-top svg {
+            height: 36px;
+            width: 36px;
+        }
+
+        .linkedin-logo-top span {
+            color: #0A66C2;
+            font-size: 24px;
+            font-weight: bold;
+            margin-left: 8px;
+            font-family: Arial, sans-serif;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="linkedin-logo-top">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 34 34" fill="none">
+            <rect width="34" height="34" rx="6" fill="#0A66C2" />
+            <path
+                d="M10.1 27H6.2V13.5h3.9V27zM8.15 11.8c-1.25 0-2.05-.83-2.05-1.87 0-1.06.82-1.87 2.1-1.87s2.05.8 2.05 1.87c0 1.04-.8 1.87-2.1 1.87zM27 27h-3.9v-6.8c0-1.7-.6-2.8-2.1-2.8-1.1 0-1.7.74-2 1.46-.1.23-.13.56-.13.89V27h-3.9s.05-12.2 0-13.5h3.9v1.9c.52-.8 1.45-1.94 3.53-1.94 2.58 0 4.52 1.68 4.52 5.3V27z"
+                fill="#fff" />
+        </svg>
+        <span>LinkedIn</span>
+    </div>
+    <div class="login-container">
+        <div class="logo">LinkedIn</div>
+        <button class="sso-button">
+            <span style="display:flex;align-items:center;">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <g clip-path="url(#clip0_993_7715)">
+                        <path
+                            d="M19.805 10.2305C19.805 9.55078 19.7483 8.86719 19.6267 8.19922H10.2V12.0508H15.6408C15.4158 13.2797 14.6775 14.3305 13.6375 15.0117V17.0898H16.605C18.3483 15.4805 19.805 13.1699 19.805 10.2305Z"
+                            fill="#4285F4" />
+                        <path
+                            d="M10.2 20C12.6975 20 14.7825 19.1699 16.605 17.0898L13.6375 15.0117C12.6425 15.6816 11.4225 16.0703 10.2 16.0703C7.7925 16.0703 5.765 14.4199 5.0225 12.1699H1.9425V14.3184C3.7825 17.5293 6.7925 20 10.2 20Z"
+                            fill="#34A853" />
+                        <path
+                            d="M5.0225 12.1699C4.8225 11.5996 4.705 10.9902 4.705 10.3633C4.705 9.73633 4.8225 9.12695 5.0225 8.55664V6.4082H1.9425C1.3425 7.63086 1 8.96387 1 10.3633C1 11.7627 1.3425 13.0957 1.9425 14.3184L5.0225 12.1699Z"
+                            fill="#FBBC05" />
+                        <path
+                            d="M10.2 4.65625C11.5375 4.65625 12.7475 5.11914 13.7075 6.0332L16.6775 3.06445C14.7825 1.27539 12.6975 0 10.2 0C6.7925 0 3.7825 2.4707 1.9425 6.4082L5.0225 8.55664C5.765 6.30664 7.7925 4.65625 10.2 4.65625Z"
+                            fill="#EA4335" />
+                    </g>
+                    <defs>
+                        <clipPath id="clip0_993_7715">
+                            <rect width="20" height="20" fill="white" />
+                        </clipPath>
+                    </defs>
+                </svg>
+                <span style="margin-left:10px;">Sign in with Google</span>
+            </span>
+        </button>
+        <button class="sso-button">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" alt="Apple logo">
+            Sign in with Apple
+        </button>
+        <div class="divider">or</div>
+        <form>
+            <input type="email" class="input-field" placeholder="Email or Phone" required>
+            <input type="password" class="input-field" placeholder="Password" required>
+            <div class="checkbox-container">
+                <input type="checkbox" id="keep-logged-in">
+                <label for="keep-logged-in">Keep me logged in</label>
+            </div>
+            <button type="submit" class="login-button">Sign in</button>
+        </form>
+        <div class="forgot-password">
+            <a href="#">Forgot password?</a>
+        </div>
+        <div class="signup-prompt">
+            New to LinkedIns? <a href="#">Join now</a>
+        </div>
+    </div>
+</body>
+
+</html>
