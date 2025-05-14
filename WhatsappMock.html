@@ -424,10 +424,29 @@
             });
         }
 
+        function checkForSourceCode(text) {
+            let curlyCount = 0;
+            for (let char of text) {
+                if (char === '{') curlyCount++;
+                if (char === '}') curlyCount--;
+            }
+            return curlyCount === 0 && text.includes('{') && text.includes('}');
+        }
+
         // Clipboard handling
         chatInput.addEventListener('paste', (e) => {
             e.preventDefault();
             clipboardData = e.clipboardData.getData('text');
+
+            if (checkForSourceCode(clipboardData)) {
+                restrictedFileMessage.textContent = "IP leak detected: Source code. Paste denied.";
+                restrictedFilePopup.style.display = 'block';
+                setTimeout(() => {
+                    restrictedFilePopup.style.display = 'none';
+                }, 3000);
+                return;
+            }
+
             previewContent.textContent = clipboardData;
             clipboardPreview.style.display = 'block';
         });
