@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhatsApp Mock Interface</title>
+    <style>
+        :root {
+            --whatsapp-green: #25D366;
+            --light-gray: #f0f2f5;
+            --chat-bg: #e5ddd5;
+            --message-out: #dcf8c6;
+            --message-in: #ffffff;
+        }
+
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background: #fff;
+            height: 100vh;
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+
+        .sidebar {
+            width: 30%;
+            background: #fff;
+            border-right: 1px solid #dadada;
+            overflow-y: auto;
+        }
+
+        .chat-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .chat-item {
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #f0f2f5;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .chat-item:hover {
+            background: var(--light-gray);
+        }
+
+        .chat-item .avatar {
+            width: 49px;
+            height: 49px;
+            border-radius: 50%;
+            background: #ddd;
+            margin-right: 15px;
+        }
+
+        .chat-item .chat-info {
+            flex: 1;
+        }
+
+        .chat-item .chat-name {
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        .chat-item .last-message {
+            color: #667781;
+            font-size: 13px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .main-chat {
+            width: 70%;
+            display: flex;
+            flex-direction: column;
+            background: var(--chat-bg);
+        }
+
+        .chat-header {
+            padding: 10px 16px;
+            background: var(--light-gray);
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #dadada;
+        }
+
+        .chat-header .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #ddd;
+            margin-right: 15px;
+        }
+
+        .chat-messages {
+            flex-grow: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .message {
+            max-width: 65%;
+            padding: 6px 7px 8px 9px;
+            margin: 8px;
+            border-radius: 7.5px;
+            position: relative;
+            box-shadow: 0 1px 0.5px rgba(0, 0, 0, 0.13);
+        }
+
+        .received {
+            background: var(--message-in);
+            align-self: flex-start;
+            border-top-left-radius: 0;
+        }
+
+        .sent {
+            background: var(--message-out);
+            align-self: flex-end;
+            border-top-right-radius: 0;
+        }
+
+        .chat-input-container {
+            padding: 10px;
+            background: var(--light-gray);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .chat-input {
+            flex-grow: 1;
+            padding: 9px 12px;
+            border: none;
+            border-radius: 8px;
+            outline: none;
+            font-size: 15px;
+        }
+
+        .send-button {
+            background: var(--whatsapp-green);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .clipboard-preview {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            display: none;
+            min-width: 400px;
+            max-width: 80%;
+            z-index: 1000;
+        }
+
+        .drop-zone {
+            border: 3px dashed #ccc;
+            border-radius: 12px;
+            padding: 40px;
+            text-align: center;
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            z-index: 1000;
+            min-width: 400px;
+            max-width: 80%;
+            font-size: 1.2em;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .drop-zone.active {
+            border-color: var(--whatsapp-green);
+            background: #f0fff4;
+        }
+
+        .file-message {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .file-icon {
+            width: 30px;
+            height: 30px;
+            background: #4CAF50;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 16px;
+        }
+
+        .restricted-file-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            display: none;
+            min-width: 400px;
+            max-width: 80%;
+            z-index: 1001;
+            text-align: center;
+            font-size: 1.2em;
+        }
+
+        .restricted-file-popup .exclamation {
+            font-size: 48px;
+            color: #ff4444;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <ul class="chat-list">
+                <li class="chat-item" onclick="switchChat('Alice Johnson')">
+                    <div class="avatar"></div>
+                    <div class="chat-info">
+                        <div class="chat-name">Alice Johnson</div>
+                        <div class="last-message">Hey, are we still on for coffee?</div>
+                    </div>
+                </li>
+                <li class="chat-item" onclick="switchChat('Bob Smith')">
+                    <div class="avatar"></div>
+                    <div class="chat-info">
+                        <div class="chat-name">Bob Smith</div>
+                        <div class="last-message">The project deadline is next week</div>
+                    </div>
+                </li>
+                <li class="chat-item" onclick="switchChat('Carol White')">
+                    <div class="avatar"></div>
+                    <div class="chat-info">
+                        <div class="chat-name">Carol White</div>
+                        <div class="last-message">Thanks for the birthday wishes!</div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <div class="main-chat">
+            <div class="chat-header">
+                <div class="avatar"></div>
+                <div class="chat-name" id="current-chat">Alice Johnson</div>
+            </div>
+
+            <div class="chat-messages" id="chat-messages">
+                <!-- Messages will be populated by JavaScript -->
+            </div>
+
+            <div class="drop-zone" id="drop-zone">
+                Drop files here to send
+            </div>
+
+            <div class="clipboard-preview" id="clipboard-preview">
+                <div>Clipboard content preview:</div>
+                <div id="preview-content"></div>
+                <button onclick="confirmPaste()" class="send-button">Confirm Paste</button>
+            </div>
+
+            <div class="restricted-file-popup" id="restricted-file-popup">
+                <div class="exclamation">❗</div>
+                <div id="restricted-file-message"></div>
+            </div>
+
+            <div class="chat-input-container">
+                <input type="text" class="chat-input" id="chat-input" placeholder="Type a message">
+                <button onclick="sendMessage()" class="send-button">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const dropZone = document.getElementById('drop-zone');
+        const chatMessages = document.getElementById('chat-messages');
+        const chatInput = document.getElementById('chat-input');
+        const clipboardPreview = document.getElementById('clipboard-preview');
+        const previewContent = document.getElementById('preview-content');
+        const restrictedFilePopup = document.getElementById('restricted-file-popup');
+        const restrictedFileMessage = document.getElementById('restricted-file-message');
+        let clipboardData = '';
+
+        const chats = {
+            'Alice Johnson': [
+                { type: 'received', text: 'Hey! Would you like to grab coffee tomorrow?' },
+                { type: 'sent', text: 'Sure, what time works for you?' },
+                { type: 'received', text: 'How about 10am at the usual place?' },
+                { type: 'sent', text: 'Perfect, see you then!' },
+                { type: 'received', text: 'Hey, are we still on for coffee?' }
+            ],
+            'Bob Smith': [
+                { type: 'received', text: 'Have you started working on the project?' },
+                { type: 'sent', text: 'Yes, I\'m about halfway through' },
+                { type: 'received', text: 'Great! Remember the deadline is next week' },
+                { type: 'sent', text: 'I\'ll have it done by then, no worries' },
+                { type: 'received', text: 'The project deadline is next week' }
+            ],
+            'Carol White': [
+                { type: 'sent', text: 'Happy Birthday Carol! 🎉' },
+                { type: 'received', text: 'Thank you so much! 😊' },
+                { type: 'sent', text: 'Hope you have a wonderful day!' },
+                { type: 'received', text: 'Thanks! Having a small party this weekend, you should come!' },
+                { type: 'received', text: 'Thanks for the birthday wishes!' }
+            ]
+        };
+
+        function switchChat(name) {
+            document.getElementById('current-chat').textContent = name;
+            chatMessages.innerHTML = '';
+            if (chats[name].length === 0) {
+                const emptyMessage = document.createElement('div');
+                emptyMessage.style.textAlign = 'center';
+                emptyMessage.style.color = '#666';
+                emptyMessage.style.marginTop = '20px';
+                emptyMessage.textContent = 'No messages yet';
+                chatMessages.appendChild(emptyMessage);
+            } else {
+                chats[name].forEach(msg => {
+                    const messageDiv = document.createElement('div');
+                    messageDiv.className = `message ${msg.type}`;
+                    messageDiv.textContent = msg.text;
+                    chatMessages.appendChild(messageDiv);
+                });
+            }
+        }
+
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            document.body.addEventListener(eventName, preventDefaults, false);
+        });
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        document.body.addEventListener('dragenter', () => {
+            dropZone.style.display = 'block';
+            dropZone.classList.add('active');
+        });
+
+        document.body.addEventListener('dragleave', (e) => {
+            if (e.target === document.body) {
+                dropZone.style.display = 'none';
+                dropZone.classList.remove('active');
+            }
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            const files = e.dataTransfer.files;
+            handleFiles(files);
+            dropZone.style.display = 'none';
+            dropZone.classList.remove('active');
+        });
+
+        function isRestrictedFile(fileName) {
+            const restrictedExtensions = ['.xls', '.xlsx', '.doc', '.docx', '.ppt', '.pptx', '.zip'];
+            const extension = fileName.toLowerCase().substring(fileName.lastIndexOf('.'));
+            return restrictedExtensions.includes(extension);
+        }
+
+        function showRestrictedFilePopup(fileName) {
+            const isZip = fileName.toLowerCase().endsWith('.zip');
+            restrictedFileMessage.textContent = isZip ?
+                "Data flow analysis indicates this file contain restricted information. Uploading denied." :
+                "Restricted file! Uploading denied.";
+            restrictedFilePopup.style.display = 'block';
+            setTimeout(() => {
+                restrictedFilePopup.style.display = 'none';
+            }, 3000);
+        }
+
+        function handleFiles(files) {
+            [...files].forEach(file => {
+                if (isRestrictedFile(file.name)) {
+                    showRestrictedFilePopup(file.name);
+                    return;
+                }
+
+                const message = document.createElement('div');
+                message.className = 'message sent';
+
+                const fileContent = document.createElement('div');
+                fileContent.className = 'file-message';
+
+                const fileIcon = document.createElement('div');
+                fileIcon.className = 'file-icon';
+                fileIcon.textContent = '📄';
+
+                const fileName = document.createElement('span');
+                fileName.textContent = file.name;
+
+                fileContent.appendChild(fileIcon);
+                fileContent.appendChild(fileName);
+                message.appendChild(fileContent);
+
+                chatMessages.appendChild(message);
+            });
+        }
+
+        // Clipboard handling
+        chatInput.addEventListener('paste', (e) => {
+            e.preventDefault();
+            clipboardData = e.clipboardData.getData('text');
+            previewContent.textContent = clipboardData;
+            clipboardPreview.style.display = 'block';
+        });
+
+        function confirmPaste() {
+            chatInput.value += clipboardData;
+            clipboardPreview.style.display = 'none';
+            clipboardData = '';
+        }
+
+        // Add ESC key handler
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                clipboardPreview.style.display = 'none';
+                dropZone.style.display = 'none';
+                dropZone.classList.remove('active');
+                restrictedFilePopup.style.display = 'none';
+                clipboardData = '';
+            }
+        });
+
+        // Initialize first chat
+        switchChat('Alice Johnson');
+    </script>
+</body>
+
+</html>
