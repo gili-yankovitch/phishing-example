@@ -6,8 +6,11 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist -f"
   },
+  "homepage": "https://gili-yankovitch.github.io/phishing-example",
   "keywords": [],
   "author": "",
   "license": "ISC",
